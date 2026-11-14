@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Christopher Musonda | Computer Engineer & AI Systems Builder</title>
+  <style>
+    :root {
+      --primary: #0f172a;
+      --accent: #2563eb;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* Top Control Bar (Hidden when printing PDF) */
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--primary);
+      color: #fff;
+      padding: 12px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+    }
+    .toolbar-brand { font-weight: 700; font-size: 1rem; letter-spacing: 0.3px; }
+    .toolbar-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .btn {
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-outline { background: transparent; color: #fff; border: 1px solid #475569; }
+    .btn-outline:hover { background: #1e293b; }
+    .btn-success { background: #10b981; color: #fff; display: none; }
+
+    /* Main Container */
+    .container {
+      max-width: 920px;
+      margin: 28px auto;
+      background: var(--card);
+      padding: 40px 48px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+      border: 1px solid var(--border);
+    }
+
+    /* Header */
+    header {
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 18px;
+      margin-bottom: 24px;
+    }
+    h1 { font-size: 2rem; color: var(--primary); line-height: 1.2; }
+    .subtitle { font-size: 1.05rem; color: var(--accent); font-weight: 600; margin-top: 4px; }
+    .contact-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 10px;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .contact-bar a { color: var(--accent); text-decoration: none; }
+
+    /* Sections */
+    section { margin-bottom: 24px; }
+    h2 {
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 5px;
+      margin-bottom: 12px;
+    }
+
+    /* Featured Projects Grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+    .project-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      background: #f8fafc;
+    }
+    .project-card h3 { font-size: 1rem; color: var(--primary); margin-bottom: 4px; }
+    .project-tags { font-size: 0.78rem; color: var(--accent); font-weight: 600; margin-bottom: 8px; }
+    .project-links { margin-top: 10px; display: flex; gap: 12px; font-size: 0.85rem; }
+    .project-links a { color: var(--accent); font-weight: 600; text-decoration: none; }
+
+    /* Experience & Education Items */
+    .item { margin-bottom: 16px; }
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .item-sub { font-size: 0.9rem; color: var(--muted); margin-bottom: 6px; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 4px; font-size: 0.94rem; }
+
+    /* Skills Pills */
+    .skills-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-pill {
+      background: #eff6ff;
+      color: #1e40af;
+      border: 1px solid #bfdbfe;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    /* Edit Mode Highlighting */
+    body.editing [contenteditable="true"] {
+      outline: 2px dashed #3b82f6;
+      background: #eff6ff;
+      border-radius: 4px;
+      padding: 2px 4px;
+    }
+    .edit-banner {
+      display: none;
+      background: #dbeafe;
+      color: #1e3a8a;
+      padding: 10px 24px;
+      text-align: center;
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+    body.editing .edit-banner { display: block; }
+
+    /* Print / PDF Styles */
+    @media print {
+      body { background: #fff; }
+      .toolbar, .edit-banner, .no-print { display: none !important; }
+      .container {
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        border: none;
+        max-width: 100%;
+      }
+      .project-card { background: #fff; break-inside: avoid; }
+      .item { break-inside: avoid; }
+      a { color: #000; text-decoration: none; }
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 24px 20px; margin: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Action Bar -->
+  <div class="toolbar no-print">
+    <div class="toolbar-brand">Christopher Musonda • Portfolio & Live CV</div>
+    <div class="toolbar-actions">
+      <button class="btn btn-primary" onclick="window.print()">📄 Download / Print PDF</button>
+      <button class="btn btn-outline" id="editToggleBtn" onclick="toggleEditMode()">✏️ Edit CV Online</button>
+      <button class="btn btn-success" id="saveLocalBtn" onclick="saveToBrowser()">💾 Save Draft</button>
+      <button class="btn btn-success" id="exportHtmlBtn" onclick="exportUpdatedHTML()">⬇️ Export HTML for GitHub</button>
+    </div>
+  </div>
+
+  <div class="edit-banner no-print">
+    <strong>Edit Mode Active:</strong> Click any text below to edit your CV directly. Click <em>Save Draft</em> to keep changes in your browser, or <em>Export HTML for GitHub</em> to download the updated file and publish it live.
+  </div>
+
+  <main class="container" id="cvContent">
+    <!-- Header -->
+    <header>
+      <h1 class="editable">Christopher Musonda</h1>
+      <div class="subtitle editable">Computer Engineer | AI Systems Builder & Data Operations Specialist</div>
+      <div class="contact-bar">
+        <span class="editable">📍 Johannesburg, South Africa / Luanshya, Zambia</span>
+        <span class="editable">📧 muzzo2025@gmail.com</span>
+        <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+        <a href="https://github.com" target="_blank">GitHub (://github.com)</a>
+      </div>
+    </header>
+
+    <!-- Summary -->
+    <section>
+      <h2>Professional Summary</h2>
+      <p class="editable">
+        Computer Engineer (BSc Computer Science, Merit) with 3+ years of hands-on experience spanning production AI agent development, data operations, cloud storage (AWS S3), SQL databases, and enterprise technical support. Proven track record of building resilient Python & Gemini AI systems, managing mission-critical field infrastructure, and translating complex operational challenges into reliable technical solutions.
+      </p>
+    </section>
+
+    <!-- Featured AI & Software Projects -->
+    <section>
+      <h2>Featured AI & Engineering Projects</h2>
+      <div class="projects-grid">
+        <div class="project-card">
+          <h3 class="editable">OpsAssist — AI Field & IT Support Agent</h3>
+          <div class="project-tags editable">Python • Gemini 3.8 Flash API • Streamlit • SQLite</div>
+          <p class="editable" style="font-size: 0.9rem;">
+            Production AI triage agent grounded in Standard Operating Procedures (SOPs) to diagnose hardware, power, and Starlink issues, featuring autonomous SQL ticket escalation and multi-model fallback handling.
+          </p>
+          <div class="project-links no-print">
+            <a href="https://streamlit.app" target="_blank">🚀 Live App</a>
+            <a href="https://github.com/ops-assist-agent" target="_blank">💻 GitHub Source</a>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <h3 class="editable">ChainOfCustody AI — Mobile Asset Audit Agent</h3>
+          <div class="project-tags editable">Flutter/Dart • Python FastAPI • Gemini Vision • SQLite</div>
+          <p class="editable" style="font-size: 0.9rem;">
+            Mobile-first hardware reconciliation agent combining camera barcode scanning with Gemini Vision structured JSON audits to verify field equipment condition and log tamper-evident custody records.
+          </p>
+          <div class="project-links no-print">
+            <a href="https://github.com" target="_blank">💻 GitHub Profile</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience -->
+    <section>
+      <h2>Work Experience</h2>
+
+      <div class="item">
+        <div class="item-header">
+          <span class="editable">Technical Support Officer (Field & Data Operations)</span>
+          <span class="editable">Electoral Commission of Zambia (ECZ)</span>
+        </div>
+        <div class="item-sub editable">Contract • Zambia</div>
+        <ul>
+          <li class="editable">Managed critical field data transmissions and integrity verification to AWS S3 cloud storage across distributed registration operations.</li>
+          <li class="editable">Executed end-to-end system recovery, database backups, and hardware/software diagnostics under strict operational deadlines.</li>
+          <li class="editable">Coordinated equipment dispatch, technical onboarding, and asset accountability for field registration teams.</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="item-header">
+          <span class="editable">IT & Network Support Specialist</span>

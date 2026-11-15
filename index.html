@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,27 +8,52 @@
     :root {
       --primary: #0f172a;
       --accent: #2563eb;
-      --bg: #f8fafc;
+      --accent-glow: rgba(37, 99, 235, 0.18);
+      --bg: #f1f5f9;
       --card: #ffffff;
+      --card-alt: #f8fafc;
       --text: #1e293b;
       --muted: #64748b;
       --border: #e2e8f0;
+      --pill-bg: #eff6ff;
+      --pill-text: #1e40af;
+      --pill-border: #bfdbfe;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    [data-theme="dark"] {
+      --primary: #f8fafc;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.2);
+      --bg: #0b1120;
+      --card: #111827;
+      --card-alt: #1e293b;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --border: #334155;
+      --pill-bg: rgba(56, 189, 248, 0.12);
+      --pill-text: #7dd3fc;
+      --pill-border: rgba(56, 189, 248, 0.3);
+      --shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.65;
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
-    /* Top Control Bar (Hidden when printing PDF) */
+    /* Public Visitor Toolbar */
     .toolbar {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: var(--primary);
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(10px);
       color: #fff;
       padding: 12px 24px;
       display: flex;
@@ -36,44 +61,120 @@
       justify-content: space-between;
       align-items: center;
       gap: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .toolbar-brand { font-weight: 700; font-size: 1rem; letter-spacing: 0.3px; }
-    .toolbar-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .toolbar-brand {
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.25); }
+    }
+
+    /* Private Admin Bar */
+    .admin-bar {
+      display: none;
+      background: linear-gradient(90deg, #1e1b4b, #312e81);
+      color: #e0e7ff;
+      padding: 10px 24px;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      border-bottom: 1px solid #4338ca;
+      font-size: 0.85rem;
+    }
+    body.is-admin .admin-bar { display: flex; }
+
+    .admin-badge {
+      background: #4f46e5;
+      color: #fff;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+
+    .toolbar-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
     .btn {
       border: none;
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-size: 0.85rem;
+      padding: 7px 13px;
+      border-radius: 7px;
+      font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
-      transition: 0.2s;
+      transition: transform 0.15s ease, background 0.2s ease;
     }
-    .btn-primary { background: var(--accent); color: #fff; }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: #2563eb; color: #fff; }
     .btn-primary:hover { background: #1d4ed8; }
-    .btn-outline { background: transparent; color: #fff; border: 1px solid #475569; }
-    .btn-outline:hover { background: #1e293b; }
-    .btn-success { background: #10b981; color: #fff; display: none; }
+    .btn-outline { background: rgba(255,255,255,0.08); color: #f8fafc; border: 1px solid #475569; }
+    .btn-outline:hover { background: rgba(255,255,255,0.16); }
+    .btn-warning { background: #f59e0b; color: #0f172a; }
+    .btn-success { background: #10b981; color: #fff; }
+    .btn-danger { background: #ef4444; color: #fff; }
 
-    /* Main Container */
+    /* Main Sheet */
     .container {
-      max-width: 920px;
-      margin: 28px auto;
+      max-width: 940px;
+      margin: 32px auto;
       background: var(--card);
-      padding: 40px 48px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+      padding: 44px 52px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
       border: 1px solid var(--border);
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
 
-    /* Header */
+    /* Hero Header */
     header {
-      border-bottom: 2px solid var(--primary);
-      padding-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 22px;
       margin-bottom: 24px;
     }
-    h1 { font-size: 2rem; color: var(--primary); line-height: 1.2; }
-    .subtitle { font-size: 1.05rem; color: var(--accent); font-weight: 600; margin-top: 4px; }
+    .profile-wrapper { position: relative; flex-shrink: 0; }
+    .profile-pic {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent);
+      box-shadow: 0 0 0 5px var(--accent-glow);
+      display: block;
+    }
+    .photo-upload-btn {
+      display: none;
+      margin-top: 8px;
+      width: 112px;
+      padding: 5px 6px;
+      font-size: 0.75rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    body.editing .photo-upload-btn { display: block; }
+
+    .header-info { flex: 1; }
+    h1 { font-size: 2.1rem; color: var(--primary); line-height: 1.15; letter-spacing: -0.5px; }
+    .subtitle { font-size: 1.05rem; color: var(--accent); font-weight: 600; margin-top: 5px; }
     .contact-bar {
       display: flex;
       flex-wrap: wrap;
@@ -82,40 +183,84 @@
       font-size: 0.88rem;
       color: var(--muted);
     }
-    .contact-bar a { color: var(--accent); text-decoration: none; }
+    .contact-bar a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .contact-bar a:hover { text-decoration: underline; }
 
     /* Sections */
-    section { margin-bottom: 24px; }
+    section { margin-bottom: 26px; }
     h2 {
-      font-size: 1.05rem;
+      font-size: 0.98rem;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
       color: var(--primary);
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 5px;
-      margin-bottom: 12px;
+      border-bottom: 1.5px solid var(--border);
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    /* Featured Projects Grid */
+    .admin-add-btn {
+      display: none;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 3px 10px;
+      border-radius: 5px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    body.editing .admin-add-btn { display: inline-block; }
+
+    /* Filter Tabs */
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .filter-btn {
+      background: var(--card-alt);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* Project Cards */
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
       gap: 16px;
-      margin-bottom: 8px;
     }
     .project-card {
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
-      background: #f8fafc;
+      border-radius: 12px;
+      padding: 18px;
+      background: var(--card-alt);
+      transition: transform 0.2s ease, border-color 0.2s ease, opacity 0.25s ease;
     }
+    .project-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+    .project-card.dimmed { opacity: 0.35; }
     .project-card h3 { font-size: 1rem; color: var(--primary); margin-bottom: 4px; }
     .project-tags { font-size: 0.78rem; color: var(--accent); font-weight: 600; margin-bottom: 8px; }
-    .project-links { margin-top: 10px; display: flex; gap: 12px; font-size: 0.85rem; }
+    .project-links { margin-top: 10px; display: flex; gap: 14px; font-size: 0.85rem; }
     .project-links a { color: var(--accent); font-weight: 600; text-decoration: none; }
 
-    /* Experience & Education Items */
-    .item { margin-bottom: 16px; }
+    /* Experience & Competency Grids */
+    .item {
+      margin-bottom: 18px;
+      padding-left: 14px;
+      border-left: 2px solid var(--border);
+    }
     .item-header {
       display: flex;
       justify-content: space-between;
@@ -123,145 +268,83 @@
       font-weight: 700;
       color: var(--primary);
     }
-    .item-sub { font-size: 0.9rem; color: var(--muted); margin-bottom: 6px; }
-    ul { padding-left: 20px; }
-    li { margin-bottom: 4px; font-size: 0.94rem; }
+    .item-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 6px; }
+    ul { padding-left: 18px; }
+    li { margin-bottom: 5px; font-size: 0.93rem; }
+
+    .two-col-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .info-box {
+      background: var(--card-alt);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .info-box h4 {
+      font-size: 0.9rem;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
 
     /* Skills Pills */
     .skills-list { display: flex; flex-wrap: wrap; gap: 8px; }
     .skill-pill {
-      background: #eff6ff;
-      color: #1e40af;
-      border: 1px solid #bfdbfe;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.85rem;
+      background: var(--pill-bg);
+      color: var(--pill-text);
+      border: 1px solid var(--pill-border);
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 0.84rem;
       font-weight: 500;
+      transition: opacity 0.25s ease;
     }
+    .skill-pill.dimmed { opacity: 0.3; }
 
     /* Edit Mode Highlighting */
     body.editing [contenteditable="true"] {
-      outline: 2px dashed #3b82f6;
-      background: #eff6ff;
+      outline: 2px dashed var(--accent);
+      background: var(--pill-bg);
       border-radius: 4px;
-      padding: 2px 4px;
+      padding: 2px 5px;
     }
-    .edit-banner {
-      display: none;
-      background: #dbeafe;
-      color: #1e3a8a;
-      padding: 10px 24px;
-      text-align: center;
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 10px;
       font-size: 0.88rem;
       font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      border-left: 4px solid #10b981;
+      opacity: 0;
+      transform: translateY(15px);
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 999;
     }
-    body.editing .edit-banner { display: block; }
+    .toast.show { opacity: 1; transform: translateY(0); }
 
-    /* Print / PDF Styles */
+    /* Dedicated 2-Page A4 Print / PDF Styles */
+    @page {
+      size: A4 portrait;
+      margin: 14mm 15mm;
+    }
     @media print {
-      body { background: #fff; }
-      .toolbar, .edit-banner, .no-print { display: none !important; }
-      .container {
-        margin: 0;
-        padding: 0;
-        box-shadow: none;
-        border: none;
-        max-width: 100%;
+      body, [data-theme="dark"] {
+        background: #fff !important;
+        color: #1e293b !important;
+        font-size: 10.5pt;
+        line-height: 1.5;
       }
-      .project-card { background: #fff; break-inside: avoid; }
-      .item { break-inside: avoid; }
-      a { color: #000; text-decoration: none; }
-    }
-
-    @media (max-width: 640px) {
-      .container { padding: 24px 20px; margin: 12px; }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Top Action Bar -->
-  <div class="toolbar no-print">
-    <div class="toolbar-brand">Christopher Musonda • Portfolio & Live CV</div>
-    <div class="toolbar-actions">
-      <button class="btn btn-primary" onclick="window.print()">📄 Download / Print PDF</button>
-      <button class="btn btn-outline" id="editToggleBtn" onclick="toggleEditMode()">✏️ Edit CV Online</button>
-      <button class="btn btn-success" id="saveLocalBtn" onclick="saveToBrowser()">💾 Save Draft</button>
-      <button class="btn btn-success" id="exportHtmlBtn" onclick="exportUpdatedHTML()">⬇️ Export HTML for GitHub</button>
-    </div>
-  </div>
-
-  <div class="edit-banner no-print">
-    <strong>Edit Mode Active:</strong> Click any text below to edit your CV directly. Click <em>Save Draft</em> to keep changes in your browser, or <em>Export HTML for GitHub</em> to download the updated file and publish it live.
-  </div>
-
-  <main class="container" id="cvContent">
-    <!-- Header -->
-    <header>
-      <h1 class="editable">Christopher Musonda</h1>
-      <div class="subtitle editable">Computer Engineer | AI Systems Builder & Data Operations Specialist</div>
-      <div class="contact-bar">
-        <span class="editable">📍 Johannesburg, South Africa / Luanshya, Zambia</span>
-        <span class="editable">📧 muzzo2025@gmail.com</span>
-        <a href="https://linkedin.com" target="_blank">LinkedIn</a>
-        <a href="https://github.com" target="_blank">GitHub (://github.com)</a>
-      </div>
-    </header>
-
-    <!-- Summary -->
-    <section>
-      <h2>Professional Summary</h2>
-      <p class="editable">
-        Computer Engineer (BSc Computer Science, Merit) with 3+ years of hands-on experience spanning production AI agent development, data operations, cloud storage (AWS S3), SQL databases, and enterprise technical support. Proven track record of building resilient Python & Gemini AI systems, managing mission-critical field infrastructure, and translating complex operational challenges into reliable technical solutions.
-      </p>
-    </section>
-
-    <!-- Featured AI & Software Projects -->
-    <section>
-      <h2>Featured AI & Engineering Projects</h2>
-      <div class="projects-grid">
-        <div class="project-card">
-          <h3 class="editable">OpsAssist — AI Field & IT Support Agent</h3>
-          <div class="project-tags editable">Python • Gemini 3.8 Flash API • Streamlit • SQLite</div>
-          <p class="editable" style="font-size: 0.9rem;">
-            Production AI triage agent grounded in Standard Operating Procedures (SOPs) to diagnose hardware, power, and Starlink issues, featuring autonomous SQL ticket escalation and multi-model fallback handling.
-          </p>
-          <div class="project-links no-print">
-            <a href="https://streamlit.app" target="_blank">🚀 Live App</a>
-            <a href="https://github.com/ops-assist-agent" target="_blank">💻 GitHub Source</a>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <h3 class="editable">ChainOfCustody AI — Mobile Asset Audit Agent</h3>
-          <div class="project-tags editable">Flutter/Dart • Python FastAPI • Gemini Vision • SQLite</div>
-          <p class="editable" style="font-size: 0.9rem;">
-            Mobile-first hardware reconciliation agent combining camera barcode scanning with Gemini Vision structured JSON audits to verify field equipment condition and log tamper-evident custody records.
-          </p>
-          <div class="project-links no-print">
-            <a href="https://github.com" target="_blank">💻 GitHub Profile</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Experience -->
-    <section>
-      <h2>Work Experience</h2>
-
-      <div class="item">
-        <div class="item-header">
-          <span class="editable">Technical Support Officer (Field & Data Operations)</span>
-          <span class="editable">Electoral Commission of Zambia (ECZ)</span>
-        </div>
-        <div class="item-sub editable">Contract • Zambia</div>
-        <ul>
-          <li class="editable">Managed critical field data transmissions and integrity verification to AWS S3 cloud storage across distributed registration operations.</li>
-          <li class="editable">Executed end-to-end system recovery, database backups, and hardware/software diagnostics under strict operational deadlines.</li>
-          <li class="editable">Coordinated equipment dispatch, technical onboarding, and asset accountability for field registration teams.</li>
-        </ul>
-      </div>
-
-      <div class="item">
-        <div class="item-header">
-          <span class="editable">IT & Network Support Specialist</span>
+      .toolbar, .admin-bar, .no-print, .photo-upload-btn, .filter-bar, .admin-add-btn, .toast {
+        display: none !important;
+      }
+      .container {
